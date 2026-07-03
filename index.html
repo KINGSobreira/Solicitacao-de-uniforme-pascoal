@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Solicitação de Uniforme - S. Pascoal</title>
+
+  <style>
+
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background: #f4f6f9;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container{
+      background: #fff;
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      text-align: center;
+      margin-bottom: 20px;
+      color: #008f4c;
+      font-size: 28px;
+    }
+
+    .aviso{
+      background: #fff8e1;
+      border-left: 5px solid #ffb300;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: #5f4300;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .grupo{
+      margin-bottom: 18px;
+    }
+
+    label{
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input,
+    select{
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    input:focus,
+    select:focus{
+      outline: none;
+      border-color: #008f4c;
+      box-shadow: 0 0 5px rgba(0,143,76,0.3);
+    }
+
+    button{
+      width: 100%;
+      padding: 14px;
+      background: #008f4c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover{
+      background: #006b36;
+    }
+
+    .resultado{
+      margin-top: 20px;
+      background: #eefaf3;
+      border-left: 5px solid #008f4c;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+      white-space: pre-line;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Solicitação de Uniforme</h1>
+
+    <div class="aviso">
+      ⚠️ Após o preenchimento da solicitação, enviar a foto para crachá diretamente pelo WhatsApp.
+    </div>
+
+    <form id="formUniforme">
+
+      <div class="grupo">
+        <label>Nome do Colaborador</label>
+        <input type="text" id="nome" required>
+      </div>
+
+      <div class="grupo">
+        <label>Matrícula</label>
+        <input type="text" id="matricula" required>
+      </div>
+
+      <div class="grupo">
+        <label>Empresa</label>
+        <select id="empresa" required>
+          <option value="">Selecione</option>
+          <option value="SERVNAC">SERVNAC</option>
+          <option value="VERDE">VERDE</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Posto de Serviço</label>
+        <input type="text" id="posto" required>
+      </div>
+
+      <div class="grupo">
+        <label>Cidade do Posto</label>
+        <input type="text" id="cidade" required>
+      </div>
+
+      <div class="grupo">
+        <label>Tipo de Colaborador</label>
+        <select id="tipo" required>
+          <option value="">Selecione</option>
+          <option value="Fixo do Posto">Fixo do Posto</option>
+          <option value="Substituto de Férias">Substituto de Férias</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Turno</label>
+        <select id="turno" required>
+          <option value="">Selecione</option>
+          <option value="Dia">Diurno</option>
+          <option value="Noite">Noturno</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Tamanho da Camisa</label>
+        <select id="camisa" required>
+          <option value="">Selecione</option>
+          <option>P</option>
+          <option>M</option>
+          <option>G</option>
+          <option>GG</option>
+          <option>XGG</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Tamanho da Calça</label>
+        <input type="number" id="calca" required>
+      </div>
+
+      <div class="grupo">
+        <label>Tamanho do Sapato/Cuturno</label>
+        <input type="number" id="sapato" required>
+      </div>
+
+      <div class="grupo">
+        <label>Tamanho da Capa do Colete</label>
+        <select id="colete" required>
+          <option value="">Selecione</option>
+          <option>P</option>
+          <option>M</option>
+          <option>G</option>
+          <option>GG</option>
+          <option>XGG</option>
+        </select>
+      </div>
+
+      <button type="submit">Enviar Solicitação</button>
+
+    </form>
+
+    <div class="resultado" id="resultado"></div>
+
+  </div>
+
+  <script>
+
+    const form = document.getElementById('formUniforme');
+    const resultado = document.getElementById('resultado');
+
+    form.addEventListener('submit', function(e){
+
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const matricula = document.getElementById('matricula').value.trim();
+      const empresa = document.getElementById('empresa').value;
+      const posto = document.getElementById('posto').value.trim();
+      const cidade = document.getElementById('cidade').value.trim();
+      const tipo = document.getElementById('tipo').value;
+      const turno = document.getElementById('turno').value;
+      const camisa = document.getElementById('camisa').value;
+      const calca = document.getElementById('calca').value.trim();
+      const sapato = document.getElementById('sapato').value.trim();
+      const colete = document.getElementById('colete').value;
+
+      // VALIDAÇÃO DOS CAMPOS
+
+      if(
+        nome === '' ||
+        matricula === '' ||
+        empresa === '' ||
+        posto === '' ||
+        cidade === '' ||
+        tipo === '' ||
+        turno === '' ||
+        camisa === '' ||
+        calca === '' ||
+        sapato === '' ||
+        colete === ''
+      ){
+
+        alert('Preencha todos os campos antes de enviar.');
+
+        return;
+
+      }
+
+      // MENSAGEM WHATSAPP
+
+      const mensagem =
+`📋 *SOLICITAÇÃO DE UNIFORME*
+
+👤 *Nome:* ${nome}
+🆔 *Matrícula:* ${matricula}
+🏢 *Empresa:* ${empresa}
+
+📍 *Posto de Serviço:* ${posto}
+🏙️ *Cidade do Posto:* ${cidade}
+👥 *Tipo:* ${tipo}
+🕒 *Turno:* ${turno}
+
+👕 *Camisa:* ${camisa}
+👖 *Calça:* ${calca}
+🥾 *Sapato/Cuturno:* ${sapato}
+🦺 *Capa do Colete:* ${colete}
+
+📸 Favor enviar a foto para crachá diretamente pelo WhatsApp.
+
+Para realizar uma nova solicitação, acesse o sistema novamente.`;
+
+      // EXIBE RESULTADO
+
+      resultado.style.display = 'block';
+
+      resultado.innerHTML =
+`SOLICITAÇÃO ENVIADA COM SUCESSO!
+
+Nome: ${nome}
+Matrícula: ${matricula}
+Empresa: ${empresa}
+
+Posto: ${posto}
+Cidade: ${cidade}
+Tipo: ${tipo}
+Turno: ${turno}
+
+Camisa: ${camisa}
+Calça: ${calca}
+Sapato/Cuturno: ${sapato}
+Capa do Colete: ${colete}`;
+
+      // NÚMERO DESTINO
+
+      const numero = '5585991850036';
+
+      // ABRE WHATSAPP
+
+      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+      window.open(url, '_blank');
+
+      // LIMPA FORMULÁRIO
+
+      form.reset();
+
+    });
+
+  </script>
+
+</body>
+</html>
